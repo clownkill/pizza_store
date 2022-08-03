@@ -1,5 +1,7 @@
 import os
 import logging
+import json
+import string
 
 from dotenv import load_dotenv
 from aiogram import Bot, types
@@ -48,8 +50,8 @@ async def work_regime_command(message: types.Message):
         user_id,
         text=message_text
     )
-    
-    
+
+
 @dp.message_handler(commands=['Расположение',])
 async def place_command(message: types.Message):
     user_id = message.from_user.id
@@ -64,6 +66,18 @@ async def place_command(message: types.Message):
 
 
 '''*************************Общая часть*************************************'''
+
+
+@dp.message_handler()
+async def cenz_filter(message: types.Message):
+    filtered_words = {
+        word.lower().translate(str.maketrans('', '', string.punctuation)) for word in message.text.split(' ')
+    }
+    with open('cenz.json', 'r') as f:
+        cenz_words = set(json.load(f))
+    if filtered_words.intersection(cenz_words) != set():
+        await message.reply('Маты запрещены')
+        await message.delete()
 
 
 if __name__ == "__main__":
