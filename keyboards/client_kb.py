@@ -9,4 +9,4 @@ btn_place = KeyboardButton("/Расположение")
 btn_menu = KeyboardButton("/Меню")
 
 kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_client.add(btn_regime).add(btn_place).add(btn_menu).add(btn_contacts).add(btn_geoposition)
+kb_client.add(btn_regime).add(btn_place).add(btn_menu)
