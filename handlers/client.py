@@ -1,6 +1,8 @@
 from aiogram import Dispatcher, types
+from aiogram.types import ReplyKeyboardRemove
 
 from create_bot import bot, dp
+from keyboards import kb_client
 
 
 async def start_command(message: types.Message):
@@ -8,6 +10,7 @@ async def start_command(message: types.Message):
         await bot.send_message(
             message.from_user.id,
             "Приятного аппетита!",
+            reply_markup=kb_client
         )
         await message.delete()
     except Exception as e:
@@ -32,7 +35,11 @@ async def place_command(message: types.Message):
     message_text = """
     ул. Колбасная, 15
     """
-    await bot.send_message(user_id, text=message_text)
+    await bot.send_message(
+        user_id, 
+        text=message_text, 
+        reply_markup=ReplyKeyboardRemove()
+    )
 
 
 def register_handlers_client(dp: Dispatcher):
