@@ -3,14 +3,13 @@ from aiogram.types import ReplyKeyboardRemove
 
 from create_bot import bot, dp
 from keyboards import kb_client
+from data_base.sqlite_db import sql_read_menu
 
 
 async def start_command(message: types.Message):
     try:
         await bot.send_message(
-            message.from_user.id,
-            "Приятного аппетита!",
-            reply_markup=kb_client
+            message.from_user.id, "Приятного аппетита!", reply_markup=kb_client
         )
         await message.delete()
     except Exception as e:
@@ -36,13 +35,16 @@ async def place_command(message: types.Message):
     ул. Колбасная, 15
     """
     await bot.send_message(
-        user_id, 
-        text=message_text, 
-        reply_markup=ReplyKeyboardRemove()
+        user_id, text=message_text, reply_markup=ReplyKeyboardRemove()
     )
+
+
+async def pizza_menu_command(message: types.Message):
+    await sql_read_menu(message)
 
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=["start", "help"])
-    dp.register_message_handler(work_regime_command, commands=['Режим_работы'])
-    dp.register_message_handler(place_command, commands=['Расположение'])
+    dp.register_message_handler(work_regime_command, commands=["Режим_работы"])
+    dp.register_message_handler(place_command, commands=["Расположение"])
+    dp.register_message_handler(pizza_menu_command, commands=["Меню"])
